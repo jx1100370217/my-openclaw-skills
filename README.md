@@ -1,5 +1,7 @@
 # My OpenClaw Skills 🛠️
 
+**English** | [简体中文](./README.zh-CN.md)
+
 Personal collection of AI agent skills for [OpenClaw](https://github.com/openclaw/openclaw).
 
 ## 📚 Available Skills
