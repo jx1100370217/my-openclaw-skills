@@ -1,0 +1,239 @@
+# Fastlane Configuration Template
+# Copy to fastlane/Fastfile in your project
+
+default_platform(:ios)
+
+platform :ios do
+  
+  # ==================
+  # BEFORE ALL LANES
+  # ==================
+  
+  before_all do |lane|
+    # Ensure git is clean (optional, comment out for CI)
+    # ensure_git_status_clean
+    
+    # Update fastlane
+    # update_fastlane
+  end
+  
+  # ==================
+  # TESTING
+  # ==================
+  
+  desc "Run all tests"
+  lane :test do
+    scan(
+      workspace: "MyApp.xcworkspace",
+      scheme: "MyApp",
+      device: "iPhone 15",
+      code_coverage: true,
+      output_directory: "./fastlane/test_output",
+      output_types: "html,junit"
+    )
+  end
+  
+  desc "Run SwiftLint"
+  lane :lint do
+    swiftlint(
+      mode: :lint,
+      strict: true,
+      raise_if_swiftlint_error: true
+    )
+  end
+  
+  # ==================
+  # CODE SIGNING
+  # ==================
+  
+  desc "Sync development certificates"
+  lane :sync_dev do
+    match(type: "development")
+  end
+  
+  desc "Sync distribution certificates"
+  lane :sync_release do
+    match(type: "appstore")
+  end
+  
+  desc "Revoke and regenerate all certificates"
+  lane :nuke_certs do
+    match_nuke(type: "development")
+    match_nuke(type: "appstore")
+    match(type: "development", force: true)
+    match(type: "appstore", force: true)
+  end
+  
+  # ==================
+  # BETA (TestFlight)
+  # ==================
+  
+  desc "Push a new beta build to TestFlight"
+  lane :beta do |options|
+    # Run tests first (skip with skip_tests:true)
+    unless options[:skip_tests]
+      test
+    end
+    
+    # Increment build number
+    increment_build_number(
+      build_number: Time.now.strftime("%Y%m%d%H%M")
+    )
+    
+    # Sync certificates
+    match(type: "appstore", readonly: is_ci)
+    
+    # Build the app
+    build_app(
+      workspace: "MyApp.xcworkspace",
+      scheme: "MyApp",
+      configuration: "Release",
+      export_method: "app-store",
+      output_directory: "./build",
+      output_name: "MyApp.ipa"
+    )
+    
+    # Upload to TestFlight
+    upload_to_testflight(
+      skip_waiting_for_build_processing: true,
+      changelog: options[:changelog] || "Bug fixes and improvements"
+    )
+    
+    # Clean up
+    clean_build_artifacts
+    
+    # Notify
+    if ENV["SLACK_URL"]
+      slack(
+        message: "🚀 New beta build uploaded to TestFlight!",
+        success: true,
+        default_payloads: [:git_branch, :git_author]
+      )
+    end
+  end
+  
+  # ==================
+  # RELEASE (App Store)
+  # ==================
+  
+  desc "Push a new release build to App Store Connect"
+  lane :release do |options|
+    # Run tests
+    test unless options[:skip_tests]
+    
+    # Increment version if specified
+    if options[:bump]
+      increment_version_number(bump_type: options[:bump])
+    end
+    
+    # Increment build number
+    increment_build_number(
+      build_number: Time.now.strftime("%Y%m%d%H%M")
+    )
+    
+    # Sync certificates
+    match(type: "appstore", readonly: is_ci)
+    
+    # Build
+    build_app(
+      workspace: "MyApp.xcworkspace",
+      scheme: "MyApp",
+      configuration: "Release",
+      export_method: "app-store"
+    )
+    
+    # Upload to App Store Connect
+    upload_to_app_store(
+      submit_for_review: options[:submit] || false,
+      automatic_release: false,
+      skip_screenshots: true,
+      skip_metadata: options[:skip_metadata] || false,
+      precheck_include_in_app_purchases: false
+    )
+    
+    # Create git tag
+    version = get_version_number
+    build = get_build_number
+    add_git_tag(tag: "v#{version}-#{build}")
+    push_to_git_remote(tags: true)
+    
+    # Notify
+    if ENV["SLACK_URL"]
+      slack(
+        message: "🎉 Version #{version} uploaded to App Store Connect!",
+        success: true
+      )
+    end
+  end
+  
+  # ==================
+  # SCREENSHOTS
+  # ==================
+  
+  desc "Capture screenshots"
+  lane :screenshots do
+    capture_screenshots(
+      workspace: "MyApp.xcworkspace",
+      scheme: "MyAppUITests",
+      devices: [
+        "iPhone 15 Pro Max",
+        "iPhone 15 Pro",
+        "iPhone SE (3rd generation)",
+        "iPad Pro (12.9-inch) (6th generation)"
+      ],
+      languages: ["en-US"],
+      clear_previous_screenshots: true
+    )
+    
+    # Add device frames
+    frame_screenshots(silver: true)
+  end
+  
+  # ==================
+  # UTILITIES
+  # ==================
+  
+  desc "Register new device"
+  lane :register_device do
+    device_name = prompt(text: "Device name: ")
+    device_udid = prompt(text: "Device UDID: ")
+    
+    register_device(
+      name: device_name,
+      udid: device_udid
+    )
+    
+    match(type: "development", force_for_new_devices: true)
+  end
+  
+  desc "Update version number"
+  lane :bump do |options|
+    type = options[:type] || "patch"
+    increment_version_number(bump_type: type)
+    
+    version = get_version_number
+    commit_version_bump(message: "Bump version to #{version}")
+  end
+  
+  # ==================
+  # ERROR HANDLING
+  # ==================
+  
+  error do |lane, exception|
+    if ENV["SLACK_URL"]
+      slack(
+        message: "❌ Build failed in lane #{lane}",
+        success: false,
+        attachment_properties: {
+          fields: [
+            {
+              title: "Error",
+              value: exception.message,
+              short: false
+            }
+          ]
+        }
+      )
+    end
+  end
+end

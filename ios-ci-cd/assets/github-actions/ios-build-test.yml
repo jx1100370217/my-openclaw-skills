@@ -1,0 +1,121 @@
+# iOS Build and Test Workflow
+# Copy to .github/workflows/ios.yml
+
+name: iOS CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    name: SwiftLint
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Install SwiftLint
+        run: brew install swiftlint
+        
+      - name: Run SwiftLint
+        run: swiftlint --strict --reporter github-actions-logging
+
+  build-and-test:
+    name: Build & Test
+    runs-on: macos-14
+    needs: lint
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Select Xcode
+        run: sudo xcode-select -s /Applications/Xcode_15.2.app
+        
+      - name: Cache Swift Packages
+        uses: actions/cache@v4
+        with:
+          path: |
+            .build
+            ~/Library/Developer/Xcode/DerivedData/**/SourcePackages
+          key: ${{ runner.os }}-spm-${{ hashFiles('**/Package.resolved') }}
+          restore-keys: ${{ runner.os }}-spm-
+      
+      - name: Resolve Packages
+        run: xcodebuild -resolvePackageDependencies -workspace MyApp.xcworkspace -scheme MyApp
+        
+      - name: Build
+        run: |
+          xcodebuild build-for-testing \
+            -workspace MyApp.xcworkspace \
+            -scheme MyApp \
+            -destination 'platform=iOS Simulator,name=iPhone 15,OS=17.2' \
+            -configuration Debug \
+            CODE_SIGN_IDENTITY="" \
+            CODE_SIGNING_REQUIRED=NO \
+            | xcpretty
+            
+      - name: Run Tests
+        run: |
+          xcodebuild test-without-building \
+            -workspace MyApp.xcworkspace \
+            -scheme MyApp \
+            -destination 'platform=iOS Simulator,name=iPhone 15,OS=17.2' \
+            -enableCodeCoverage YES \
+            -resultBundlePath TestResults.xcresult \
+            | xcpretty --report junit
+            
+      - name: Upload Test Results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: test-results
+          path: |
+            TestResults.xcresult
+            build/reports/junit.xml
+          retention-days: 14
+          
+      - name: Publish Test Results
+        uses: dorny/test-reporter@v1
+        if: always()
+        with:
+          name: Test Results
+          path: build/reports/junit.xml
+          reporter: java-junit
+
+  # Optional: Run on multiple devices
+  test-matrix:
+    name: Test Matrix
+    runs-on: macos-14
+    needs: build-and-test
+    if: github.event_name == 'pull_request'
+    
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - device: "iPhone SE (3rd generation)"
+            os: "17.2"
+          - device: "iPhone 15 Pro Max"
+            os: "17.2"
+          - device: "iPad Pro (12.9-inch) (6th generation)"
+            os: "17.2"
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Select Xcode
+        run: sudo xcode-select -s /Applications/Xcode_15.2.app
+        
+      - name: Test on ${{ matrix.device }}
+        run: |
+          xcodebuild test \
+            -workspace MyApp.xcworkspace \
+            -scheme MyApp \
+            -destination 'platform=iOS Simulator,name=${{ matrix.device }},OS=${{ matrix.os }}' \
+            | xcpretty

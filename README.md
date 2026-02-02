@@ -1,88 +1,125 @@
-# My OpenClaw Skills 🦞
+# My OpenClaw Skills 🛠️
 
-个人 OpenClaw 技能库，可在任意设备上复用。
+Personal collection of AI agent skills for [OpenClaw](https://github.com/openclaw/openclaw).
 
-## 📦 技能列表
+## 📚 Available Skills
 
-### 📝 内容创作
-| 技能 | 描述 |
-|------|------|
-| [csdn-blog-publisher](./csdn-blog-publisher/) | 撰写并发布技术博客到 CSDN |
+### 📝 Content Creation
+| Skill | Description |
+|-------|-------------|
+| [csdn-blog-publisher](./csdn-blog-publisher/) | Write and publish high-quality tech blogs to CSDN |
 
-### 📱 iOS 开发
-| 技能 | 描述 |
-|------|------|
-| [ios-swiftui-development](./ios-swiftui-development/) | SwiftUI 开发：UI 组件、状态管理、动画、导航 |
-| [ios-app-architecture](./ios-app-architecture/) | iOS 架构设计：MVVM、TCA、Clean Architecture、模块化 |
-| [ios-app-store-publishing](./ios-app-store-publishing/) | App Store 发布：ASO 优化、审核指南、上架流程 |
+### 📱 iOS Development (Full Lifecycle)
 
-## 🚀 使用方法
+A comprehensive skill set covering the entire iOS app development journey from idea to App Store:
 
-### 方式一：直接复制到 OpenClaw skills 目录
+| Stage | Skill | Description |
+|-------|-------|-------------|
+| 1️⃣ Ideation | [ios-idea-validation](./ios-idea-validation/) | Validate app ideas, market research, TAM/SAM/SOM analysis |
+| 2️⃣ Research | [ios-competitor-analysis](./ios-competitor-analysis/) | Analyze competitors, find differentiation opportunities |
+| 3️⃣ Planning | [ios-prd-generator](./ios-prd-generator/) | Generate comprehensive Product Requirements Documents |
+| 4️⃣ Design | [ios-ui-ux-design](./ios-ui-ux-design/) | Design following Apple HIG, accessibility, design systems |
+| 5️⃣ Setup | [ios-project-setup](./ios-project-setup/) | Initialize Xcode projects with best practices |
+| 6️⃣ Development | [ios-swiftui-development](./ios-swiftui-development/) | SwiftUI components, state management, animations |
+| 7️⃣ Architecture | [ios-app-architecture](./ios-app-architecture/) | MVVM, TCA, Clean Architecture patterns |
+| 8️⃣ Testing | [ios-testing](./ios-testing/) | Unit tests, UI tests, snapshot tests, TDD |
+| 9️⃣ CI/CD | [ios-ci-cd](./ios-ci-cd/) | GitHub Actions, Fastlane, Xcode Cloud automation |
+| 🔟 Publishing | [ios-app-store-publishing](./ios-app-store-publishing/) | App Store submission, ASO, review guidelines |
+
+### 🗺️ iOS Development Workflow
+
+```
+💡 Idea
+   ↓
+┌─────────────────────────────────────────────────────────┐
+│ Phase 1: Discovery                                       │
+│   ios-idea-validation → ios-competitor-analysis         │
+└─────────────────────────────────────────────────────────┘
+   ↓
+┌─────────────────────────────────────────────────────────┐
+│ Phase 2: Planning                                        │
+│   ios-prd-generator → ios-ui-ux-design                  │
+└─────────────────────────────────────────────────────────┘
+   ↓
+┌─────────────────────────────────────────────────────────┐
+│ Phase 3: Development                                     │
+│   ios-project-setup → ios-swiftui-development           │
+│                    → ios-app-architecture               │
+└─────────────────────────────────────────────────────────┘
+   ↓
+┌─────────────────────────────────────────────────────────┐
+│ Phase 4: Quality                                         │
+│   ios-testing → ios-ci-cd                               │
+└─────────────────────────────────────────────────────────┘
+   ↓
+┌─────────────────────────────────────────────────────────┐
+│ Phase 5: Launch                                          │
+│   ios-app-store-publishing                              │
+└─────────────────────────────────────────────────────────┘
+   ↓
+🚀 App Store!
+```
+
+## 🚀 Usage
+
+### Install Skills
+
+1. Clone this repository:
+```bash
+git clone git@github.com:jx1100370217/my-openclaw-skills.git
+```
+
+2. Link to OpenClaw (add to your openclaw config):
+```yaml
+skills:
+  paths:
+    - /path/to/my-openclaw-skills
+```
+
+### Use a Skill
+
+Just describe what you want to do, and the AI will automatically load the appropriate skill:
+
+```
+💬 "帮我验证一个新的 App 创意"
+   → Uses: ios-idea-validation
+
+💬 "分析一下 Notion 的竞品"
+   → Uses: ios-competitor-analysis
+
+💬 "写一个 SwiftUI 列表页面"
+   → Uses: ios-swiftui-development
+
+💬 "帮我写一篇关于 AI Agent 的博客发到 CSDN"
+   → Uses: csdn-blog-publisher
+```
+
+## 📁 Skill Structure
+
+Each skill follows the OpenClaw skill format:
+
+```
+skill-name/
+├── SKILL.md          # Main skill definition (required)
+├── references/       # Reference documentation
+├── assets/           # Templates, configs, code snippets
+└── scripts/          # Automation scripts (if any)
+```
+
+## 🔄 Sync Across Devices
 
 ```bash
-# 克隆仓库
-git clone https://github.com/jx1100370217/my-openclaw-skills.git
+# On new machine
+git clone git@github.com:jx1100370217/my-openclaw-skills.git
 
-# 复制所需技能到 OpenClaw
-cp -r my-openclaw-skills/ios-swiftui-development /path/to/openclaw/skills/
-cp -r my-openclaw-skills/ios-app-architecture /path/to/openclaw/skills/
-cp -r my-openclaw-skills/ios-app-store-publishing /path/to/openclaw/skills/
+# Keep updated
+git pull origin main
 ```
 
-### 方式二：软链接
+## 📝 License
 
-```bash
-ln -s $(pwd)/my-openclaw-skills/ios-swiftui-development ~/.openclaw/skills/
-ln -s $(pwd)/my-openclaw-skills/ios-app-architecture ~/.openclaw/skills/
-```
+MIT - Feel free to use and modify for your own needs.
 
-## 📝 技能详情
+---
 
-### csdn-blog-publisher
-自动化 CSDN 博客发布流程：
-- 📚 内容研究与资料收集
-- ✍️ 符合 CSDN 规范的博客撰写
-- 🖼️ 免费封面图获取
-- 🌐 浏览器自动化发布
-
-### ios-swiftui-development
-SwiftUI 现代化 iOS 开发：
-- 🎨 UI 组件快速参考（List, Grid, Navigation）
-- 📊 状态管理（@State, @Binding, @Observable）
-- ✨ 动画与转场效果
-- 🔧 自定义修饰符和性能优化
-
-### ios-app-architecture
-可扩展的 iOS 架构设计：
-- 🏗️ MVVM / TCA / Clean Architecture
-- 💉 依赖注入模式
-- 📦 Swift Package 模块化
-- 🧪 测试策略
-
-### ios-app-store-publishing
-App Store 成功上架指南：
-- ✅ 提交前检查清单
-- 🎯 ASO 优化策略
-- 📋 审核指南解读
-- 🚫 常见拒审原因及解决
-
-## 🔄 触发示例
-
-```
-"帮我用 SwiftUI 写一个列表页面"
-"设计一个 iOS app 的架构"
-"准备发布我的 app 到 App Store"
-"帮我写一篇关于 xxx 的博客发到 CSDN"
-```
-
-## 📚 参考资源
-
-- [Apple SwiftUI Documentation](https://developer.apple.com/documentation/swiftui)
-- [App Store Review Guidelines](https://developer.apple.com/app-store/review/guidelines/)
-- [Point-Free Composable Architecture](https://github.com/pointfreeco/swift-composable-architecture)
-- [Awesome iOS](https://github.com/vsouza/awesome-ios)
-
-## 📄 License
-
-MIT
+Made with ❤️ by 小婧 (OpenClaw AI Assistant)
