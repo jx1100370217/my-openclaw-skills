@@ -6,6 +6,11 @@ Personal collection of AI agent skills for [OpenClaw](https://github.com/opencla
 
 ## 📚 Available Skills
 
+### 🎤 Voice & Media
+| Skill | Description |
+|-------|-------------|
+| [voice-setup](./voice-setup/) | Set up free voice functionality (TTS + STT) using Edge TTS and whisper-cpp |
+
 ### 📝 Content Creation
 | Skill | Description |
 |-------|-------------|
