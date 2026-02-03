@@ -6,6 +6,11 @@ Personal collection of AI agent skills for [OpenClaw](https://github.com/opencla
 
 ## 📚 Available Skills
 
+### 🔒 Security
+| Skill | Description |
+|-------|-------------|
+| [security-hardening](./security-hardening/) | Harden OpenClaw security: gateway, exec approvals, tool policies |
+
 ### 🎤 Voice & Media
 | Skill | Description |
 |-------|-------------|
