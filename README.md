@@ -12,6 +12,11 @@ Personal collection of AI agent skills for [OpenClaw](https://github.com/opencla
 | [security-hardening](./security-hardening/) | Harden OpenClaw security: gateway, exec approvals, tool policies |
 | [anthropic-token-refresh](./anthropic-token-refresh/) | Auto-refresh Claude setup-token using browser automation |
 
+### 🔄 Automation
+| Skill | Description |
+|-------|-------------|
+| [openclaw-updater](./openclaw-updater/) | Auto-sync OpenClaw from GitHub, daily update checks at 21:00 |
+
 ### 🎤 Voice & Media
 | Skill | Description |
 |-------|-------------|

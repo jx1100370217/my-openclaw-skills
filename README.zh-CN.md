@@ -12,6 +12,11 @@
 | [security-hardening](./security-hardening/) | OpenClaw 安全加固：网关、执行审批、工具策略 |
 | [anthropic-token-refresh](./anthropic-token-refresh/) | 使用浏览器自动化自动刷新 Claude setup-token |
 
+### 🔄 自动化
+| 技能 | 描述 |
+|------|------|
+| [openclaw-updater](./openclaw-updater/) | 自动从 GitHub 同步 OpenClaw，每天 21:00 检查更新 |
+
 ### 🎤 语音与媒体
 | 技能 | 描述 |
 |------|------|
