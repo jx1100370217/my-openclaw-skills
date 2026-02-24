@@ -27,6 +27,11 @@ Personal collection of AI agent skills for [OpenClaw](https://github.com/opencla
 |-------|-------------|
 | [csdn-blog-publisher](./csdn-blog-publisher/) | Write and publish high-quality tech blogs to CSDN |
 
+### 📈 Finance & Market Data
+| Skill | Description |
+|-------|-------------|
+| [eastmoney](./eastmoney/) | A-share market data: real-time quotes, sector rankings, fund NAV, dragon-tiger list via East Money/Sina/Xueqiu APIs |
+
 ### 📱 iOS Development (Full Lifecycle)
 
 A comprehensive skill set covering the entire iOS app development journey from idea to App Store:
@@ -110,6 +115,9 @@ Just describe what you want to do, and the AI will automatically load the approp
 
 💬 "帮我写一篇关于 AI Agent 的博客发到 CSDN"
    → Uses: csdn-blog-publisher
+
+💬 "查一下今天A股板块资金流入排名"
+   → Uses: eastmoney
 ```
 
 ## 📁 Skill Structure

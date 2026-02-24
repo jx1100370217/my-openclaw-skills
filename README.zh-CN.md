@@ -27,6 +27,11 @@
 |------|------|
 | [csdn-blog-publisher](./csdn-blog-publisher/) | 撰写并发布高质量技术博客到 CSDN |
 
+### 📈 金融与行情数据
+| 技能 | 描述 |
+|------|------|
+| [eastmoney](./eastmoney/) | A股行情数据：实时行情、板块排行、基金净值估算、龙虎榜，基于东方财富/新浪/雪球 API |
+
 ### 📱 iOS 开发（全生命周期）
 
 一套完整的技能集，涵盖 iOS App 开发从创意到上架的全过程：
@@ -115,6 +120,9 @@ skills:
 
 💬 "帮我写一篇关于 AI Agent 的博客发到 CSDN"
    → 使用：csdn-blog-publisher
+
+💬 "查一下今天A股板块资金流入排名"
+   → 使用：eastmoney
 ```
 
 ## 📁 技能结构
