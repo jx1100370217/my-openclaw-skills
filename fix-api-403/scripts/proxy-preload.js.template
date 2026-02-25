@@ -1,0 +1,45 @@
+// Preload script to set up global proxy for Node.js fetch/undici
+// Makes the Anthropic SDK (and all fetch calls) go through the proxy
+//
+// IMPORTANT: Replace OPENCLAW_MODULES_PATH with the actual path to your
+// OpenClaw installation's node_modules directory. Find it with:
+//   dirname $(which openclaw)/../lib/node_modules/openclaw/node_modules
+// Or:
+//   node -e "console.log(require('path').join(require('path').dirname(require('fs').realpathSync(require('which').sync('openclaw'))), '..', 'lib', 'node_modules', 'openclaw', 'node_modules'))"
+
+const proxyUrl = process.env.https_proxy || process.env.HTTPS_PROXY ||
+                 process.env.http_proxy || process.env.HTTP_PROXY;
+
+if (proxyUrl) {
+  // *** REPLACE THIS PATH with your actual OpenClaw node_modules path ***
+  const openclawModules = 'OPENCLAW_MODULES_PATH';
+
+  try {
+    // Use undici's ProxyAgent and fetch to replace the global fetch
+    const { ProxyAgent, fetch: undiciFetch } = require(openclawModules + '/undici');
+    const proxyAgent = new ProxyAgent(proxyUrl);
+
+    // Override the global fetch to use the proxy dispatcher
+    globalThis.fetch = function(input, init) {
+      if (!init) init = {};
+      if (!init.dispatcher) {
+        init.dispatcher = proxyAgent;
+      }
+      return undiciFetch(input, init);
+    };
+  } catch (err) {
+    console.error('[proxy-preload] Failed to set up undici proxy:', err.message);
+  }
+
+  try {
+    // Also patch http/https globalAgent for legacy http requests
+    const { ProxyAgent: HttpProxyAgent } = require(openclawModules + '/proxy-agent');
+    const http = require('http');
+    const https = require('https');
+    const httpProxyAgent = new HttpProxyAgent();
+    http.globalAgent = httpProxyAgent;
+    https.globalAgent = httpProxyAgent;
+  } catch (err) {
+    console.error('[proxy-preload] Failed to set up http proxy:', err.message);
+  }
+}
