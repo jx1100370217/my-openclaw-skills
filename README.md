@@ -27,6 +27,11 @@ Personal collection of AI agent skills for [OpenClaw](https://github.com/opencla
 |-------|-------------|
 | [csdn-blog-publisher](./csdn-blog-publisher/) | Write and publish high-quality tech blogs to CSDN |
 
+### 🔧 Troubleshooting
+| Skill | Description |
+|-------|-------------|
+| [fix-api-403](./fix-api-403/) | Fix Anthropic API 403 "Request not allowed" errors caused by geographic restrictions (e.g. China). Auto-deploys proxy preload for OpenClaw gateway |
+
 ### 📈 Finance & Market Data
 | Skill | Description |
 |-------|-------------|
@@ -118,6 +123,9 @@ Just describe what you want to do, and the AI will automatically load the approp
 
 💬 "查一下今天A股板块资金流入排名"
    → Uses: eastmoney
+
+💬 "webchat returns 403 error"
+   → Uses: fix-api-403
 ```
 
 ## 📁 Skill Structure
