@@ -16,6 +16,8 @@
 | 技能 | 描述 |
 |------|------|
 | [openclaw-updater](./openclaw-updater/) | 自动从 GitHub 同步 OpenClaw，每天 21:00 检查更新 |
+| [repo-to-blog-series](./repo-to-blog-series/) | 把开源 GitHub 仓库写成多篇 CSDN 风格深度技术博客系列，自动并行写作 + Gemini 电影级封面 + ≤200 字摘要 |
+| [theme-to-blog-series](./theme-to-blog-series/) | 把一个技术**主题**（不是仓库）写成多篇深度博客系列；上游走 WebSearch/WebFetch 检索权威资料而非读代码，下游与 repo-to-blog-series 同管线 |
 
 ### 🎤 语音与媒体
 | 技能 | 描述 |

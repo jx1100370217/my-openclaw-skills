@@ -17,6 +17,7 @@ Personal collection of AI agent skills for [OpenClaw](https://github.com/opencla
 |-------|-------------|
 | [openclaw-updater](./openclaw-updater/) | Auto-sync OpenClaw from GitHub, daily update checks at 21:00 |
 | [repo-to-blog-series](./repo-to-blog-series/) | Turn an open-source GitHub repo into a multi-article CSDN-style blog series with cinematic Gemini covers and ≤200-char abstracts |
+| [theme-to-blog-series](./theme-to-blog-series/) | Turn a technical *topic* (not repo) into a multi-article blog series; sister of repo-to-blog-series with web-research upstream |
 
 ### 🎤 Voice & Media
 | Skill | Description |
