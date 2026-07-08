@@ -29,6 +29,11 @@ Personal collection of AI agent skills for [OpenClaw](https://github.com/opencla
 |-------|-------------|
 | [csdn-blog-publisher](./csdn-blog-publisher/) | Write and publish high-quality tech blogs to CSDN |
 
+### 📄 Academic Papers
+| Skill | Description |
+|-------|-------------|
+| [paper-to-html](./paper-to-html/) | Deep-read an academic paper PDF into a polished Chinese HTML: MathJax-rendered formulas + figures extracted from the PDF, plus intuition / mechanism / critique / relevance-to-reader commentary. Ships a ready HTML design system (sidebar TOC, light/dark, 7 callouts, formula & data-table components) and a figure-extraction playbook. |
+
 ### 🔧 Troubleshooting
 | Skill | Description |
 |-------|-------------|
